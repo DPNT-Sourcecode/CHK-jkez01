@@ -53,7 +53,7 @@ class SpecialOffer:
 
 class PriceTable:
 
-    def __sorter_method__(offer, price_table):
+    def __sorter_method__(self, offer, price_table):
         return offer.__get_cost_savings__(price_table)
         
 
@@ -100,12 +100,3 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
-
-
-
-
-
-
-
-
-

@@ -58,4 +58,3 @@ class PriceTable:
                             'B': (30, special_B),
                             'C': (20, None),
                             'D': (15, None)}
-

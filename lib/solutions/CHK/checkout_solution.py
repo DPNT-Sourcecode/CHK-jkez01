@@ -12,10 +12,14 @@ class SpecialOffer:
     Describes a special offer for an SKU
     Types can be any of OfferType, discount describes what the offer is
     """
-    def __get_cost__(self, price_table):
+    def __get_discount_cost__(price)
+
+    def __get_cost_savings__(self, price_table):
+        if self.sku not in price_table:
+            raise ValueError("Price_table is missing sku for cost calculation")
         return {
-            OfferType.DISCOUNT : lambda: self.__get_discount_cost__(discount),
-            OfferType.COMBO : lambda: self.__get_combo_cost__(discount) 
+            OfferType.DISCOUNT : lambda: self.__get_discount_cost__(price_table[self.sku][0]),
+            OfferType.COMBO : lambda: self.__get_combo_cost__(price_table[self.sku][0]) 
         }.get(self.type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
 
     def __set_discount__(self, discount):
@@ -85,6 +89,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

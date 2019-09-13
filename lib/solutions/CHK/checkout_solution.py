@@ -85,18 +85,17 @@ def checkout(skus):
         for item in skus:
             if item not in price_data.price_table:
                 return -1
-            if price_data.price_table[item][1] is None:
+            if not price_data.price_table[item][1]:
                 total += price_data.price_table[item][0]
             elif item in special_item_counter:
                 special_item_counter[item] += 1
-                if price_data.price_table[item][1].number == special_item_counter[item]:
-                    special_item_counter[item] = 0
-                    total += price_data.price_table[item][1].cost
             else:
                 special_item_counter[item] = 1
+        # todo apply special offer costs
         for item in special_item_counter:
             if special_item_counter[item] != 0:
                 total += special_item_counter[item] * price_data.price_table[item][0]
         return total
     except Exception as e:
         return -1
+

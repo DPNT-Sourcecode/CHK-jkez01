@@ -26,6 +26,24 @@ class SpecialOffer:
 
     def __init__(self, type, discount):
         self.offer = self.__set_type__(type, discount)
+
+
+class PriceTable:
+    """
+    Holds a price dictionary, and a special offer list:
+    skus are the keys, values are a (price, boolean) tuple
+    price is a number, while boolean denotes if the item has a special offer
+
+    the special offer list is built and then sorted by favourability to the customer
+    """
+    def __init__(self):
+        self.price_table = {'C': (20, False), 'D': (15, False)}
+        self.price_table['B'] = (30, [SpecialOffer(OfferType.DISCOUNT, (2, 45))])
+        self.price_table['E'] = (40, [SpecialOffer(OfferType.COMBO, ('B', 1))])
+        a_list = []
+        a_list.append(SpecialOffer(OfferType.DISCOUNT, (3, 130)))
+        a_list.append(SpecialOffer(OfferType.DISCOUNT, (5, 200)))
+        self.price_table['A'] = (50, a_list)
         
 
 # noinspection PyUnusedLocal
@@ -54,18 +72,3 @@ def checkout(skus):
     except Exception as e:
         return -1
 
-
-class PriceTable:
-    """
-    Holds a price dictionary:
-    skus are the keys, values are a (price, [SpecialOffer]) tuple
-    price is a number, while [SpecialOffer] is a list of objects
-    """
-    def __init__(self):
-        self.price_table = {'C': (20, []), 'D': (15, [])}
-        self.price_table['B'] = (30, [SpecialOffer(OfferType.DISCOUNT, (2, 45))])
-        self.price_table['E'] = (40, [SpecialOffer(OfferType.COMBO, ('B', 1))])
-        a_list = []
-        a_list.append(SpecialOffer(OfferType.DISCOUNT, (3, 130)))
-        a_list.append(SpecialOffer(OfferType.DISCOUNT, (5, 200)))
-        self.price_table['A'] = (50, a_list)

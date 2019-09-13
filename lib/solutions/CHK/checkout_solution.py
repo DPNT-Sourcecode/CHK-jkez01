@@ -128,6 +128,10 @@ class PriceTable:
 
     the special offer list is built and then sorted by favourability to the customer
     """
+    def __sorting_helper__(self, offer):
+        return offer.get_savings(self.skus)
+
+
     def __init__(self):
         self.skus = {}
         self.special_offers = []
@@ -153,9 +157,16 @@ class PriceTable:
                         temp_offers.append(SpecialOffer(offer[0][position:], OfferType.COMBO, (int(offer[0][:position]), offer[3], 1)))
                 temp_item = Item(line[1].strip(), int(line[2].strip()), temp_offers)
                 self.skus[line[1].strip()] = temp_item
-                self.special_offers += temp_offers 
-        print(self.special_offers)
-        self.special_offers = sorted(self.special_offers, key=get_savings(self.skus), reverse=True)
+                self.special_offers += temp_offers
+        first = []
+        for i in self.special_offers:
+            first.append((i.sku, i.type))
+        print(first)
+        self.special_offers = sorted(self.special_offers, key=self.__sorting_helper__, reverse=True)
+        first = []
+        for i in self.special_offers:
+            first.append((i.sku, i.type))
+        print(first)
         
         
 
@@ -185,11 +196,3 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
-
-
-
-
-
-
-
-

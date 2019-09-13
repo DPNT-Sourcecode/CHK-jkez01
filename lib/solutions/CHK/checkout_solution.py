@@ -138,27 +138,28 @@ class PriceTable:
             lines = f.readlines()
             for line in lines:
                 line = line.strip().split('|')
-                offers = line[3].strip().split(',')
                 temp_offers = []
-                for offer in offers:
-                    offer = offer.strip()
-                    if 'buy' in offer:
-                        offer = offer.split(' ')
+                offer = line[3].strip()
+                if 'buy' in offer:
+                    offer = offer.split(' ')
+                    print(offer)
+                elif 'for' in offer:
+                    offers = line[3].strip().split(',')
+                    for offer in offers:
                         print(offer)
-                    elif 'for' in offer:
-                        offer = offer.split(' ')
+                        offer = offer.strip().split(' ')
                         position = 0
                         while offer[0][position].isnumeric():
-                            position+=1
+                         position+=1
                         temp_offers.append(SpecialOffer(offer[0][position:], OfferType.DISCOUNT, (int(offer[0][:position]), int(offer[2]))))
-                    elif 'free' in offer:
-                        offer = offer.split(' ')
-                        position = 0
-                        while offer[0][position].isnumeric():
-                            position+=1
-                        temp_offers.append(SpecialOffer(offer[0][position:], OfferType.COMBO, (int(offer[0][:position]), offer[3], 1)))
-                        if offer[3] in self.skus:
-                            self.skus[offer[3]].is_special = True
+                elif 'free' in offer:
+                    offer = offer.split(' ')
+                    position = 0
+                    while offer[0][position].isnumeric():
+                        position+=1
+                    temp_offers.append(SpecialOffer(offer[0][position:], OfferType.COMBO, (int(offer[0][:position]), offer[3], 1)))
+                    if offer[3] in self.skus:
+                        self.skus[offer[3]].is_special = True
                 is_special = False
                 if len(temp_offers) > 0:
                     is_special = True
@@ -196,4 +197,5 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 

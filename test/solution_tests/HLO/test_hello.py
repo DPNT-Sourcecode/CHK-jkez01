@@ -9,4 +9,3 @@ class TestHello():
     def test_two(self):
         assert hello_solution.hello("John") == "Hello, John!"
 
-

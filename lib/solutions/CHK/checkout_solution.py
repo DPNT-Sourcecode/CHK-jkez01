@@ -12,6 +12,9 @@ class SpecialOffer:
     Describes a special offer for an SKU
     Types can be any of OfferType, discount describes what the offer is
     """
+    def is_applicable(self, counters):
+        return False
+
     def __get_discount_cost__(price):
         return self.number * price - self.cost 
 
@@ -55,7 +58,10 @@ class Item:
         return len(self.offers) > 0
 
     def get_cost(self):
-        return self.price
+        if not self.is_special():
+            return self.price
+        else:
+            return 0
 
     def __init__(self, name, price, offers):
         self.name = name
@@ -109,7 +115,9 @@ def checkout(skus):
                 total += special_sku_counter[item] * table.skus[item].get_cost()
         return total
     except Exception as e:
+        print(e)
         return -1
+
 
 
 

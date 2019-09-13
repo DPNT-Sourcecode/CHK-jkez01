@@ -15,6 +15,9 @@ class SpecialOffer:
     def is_applicable(self, counters):
         return False
 
+    def get_cost(self):
+        return 0
+
     def __get_discount_cost__(price):
         return self.number * price - self.cost 
 
@@ -107,7 +110,7 @@ def checkout(skus):
             else:
                 special_sku_counter[item] = 1
         for offer in table.special_offers:
-            if offer.is_applicable(special_sku_counter):
+            while offer.is_applicable(special_sku_counter):
                 total += offer.get_cost()
                 special_sku_counter = table.apply_special(special_sku_counter, offer)
         for item in special_sku_counter:
@@ -117,6 +120,7 @@ def checkout(skus):
     except Exception as e:
         print(e)
         return -1
+
 
 
 

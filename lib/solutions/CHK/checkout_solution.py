@@ -52,6 +52,10 @@ class SpecialOffer:
 
 
 class PriceTable:
+
+    def __sorter_method__():
+        pass
+
     """
     Holds a price dictionary, and a special offer list:
     skus are the keys, values are a (price, boolean) tuple
@@ -94,6 +98,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

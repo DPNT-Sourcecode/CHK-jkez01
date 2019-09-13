@@ -123,6 +123,7 @@ class PriceTable:
             for line in lines:
                 line = line.strip().split('|')
                 offers = line[3].strip().split(',')
+                temp_offers = []
                 for offer in offers:
                     offer = offer.strip()
                     if 'for' in offer:
@@ -130,9 +131,13 @@ class PriceTable:
                         position = 0
                         while offer[0][position].isnumeric():
                             position+=1
-                        SpecialOffer(offer[0][position:], OfferType.DISCOUNT, (int(offer[0][:position]), int(offer[2])))
+                        temp_offers.append(SpecialOffer(offer[0][position:], OfferType.DISCOUNT, (int(offer[0][:position]), int(offer[2]))))
                     elif 'free' in offer:
-                        print(offer)
+                        offer = offer.split(' ')
+                        position = 0
+                        while offer[0][position].isnumeric():
+                            position+=1
+                        temp_offers.append(SpecialOffer(offer[0][position:], OfferType.COMBO, (int(offer[0][:position]), offer[3], 1))))
 
         a_offers = [SpecialOffer('A', OfferType.DISCOUNT, (5, 200)),
                     SpecialOffer('A', OfferType.DISCOUNT, (3, 130))]
@@ -178,6 +183,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

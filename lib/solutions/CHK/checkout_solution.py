@@ -68,17 +68,17 @@ class PriceTable:
         self.price_table = {'C': (20, False), 'D': (15, False), 'B':(30, True),
         'E': (40, True), 'A': (50, True)}
         self.special_offers = []
-        self.special_offers.append((SpecialOffer('B', OfferType.DISCOUNT, (2, 45))))
-        self.special_offers.append((SpecialOffer('E', OfferType.COMBO, (2, 'B', 1))))
-        self.special_offers.append((SpecialOffer('A', OfferType.DISCOUNT, (3, 130))))
-        self.special_offers.append((SpecialOffer('A', OfferType.DISCOUNT, (5, 200))))
+        self.special_offers.append(SpecialOffer('B', OfferType.DISCOUNT, (2, 45)))
+        self.special_offers.append(SpecialOffer('E', OfferType.COMBO, (2, 'B', 1)))
+        self.special_offers.append(SpecialOffer('A', OfferType.DISCOUNT, (3, 130)))
+        self.special_offers.append(SpecialOffer('A', OfferType.DISCOUNT, (5, 200)))
         self.special_offers.sort(key=self.__sorter_method__(self.price_table), reverse=True)
         
 
 # noinspection PyUnusedLocal
 # skus = unicode string
 def checkout(skus):
-    price_data = PriceTable()
+    table = PriceTable()
     total = 0
     special_item_counter = {}
     try:
@@ -91,11 +91,14 @@ def checkout(skus):
                 special_item_counter[item] += 1
             else:
                 special_item_counter[item] = 1
-        # todo apply special offer costs
+        for offer in price_data.special_offers:
+            if offer.is_applicable(special_item_counter):
+                total += offer.apply_cost()
         for item in special_item_counter:
             if special_item_counter[item] != 0:
                 total += special_item_counter[item] * price_data.price_table[item][0]
         return total
     except Exception as e:
         return -1
+
 

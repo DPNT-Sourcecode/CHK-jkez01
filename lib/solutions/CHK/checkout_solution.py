@@ -126,7 +126,11 @@ class PriceTable:
                 for offer in offers:
                     offer = offer.strip()
                     if 'for' in offer:
+                        offer = offer.split(' ')
                         print(offer)
+                    elif 'free' in offer:
+                        print(offer)
+
         a_offers = [SpecialOffer('A', OfferType.DISCOUNT, (5, 200)),
                     SpecialOffer('A', OfferType.DISCOUNT, (3, 130))]
         a = Item('A', 50, a_offers)
@@ -171,4 +175,5 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 

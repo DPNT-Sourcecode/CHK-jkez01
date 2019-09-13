@@ -51,8 +51,16 @@ class SpecialOffer:
         self.discount = self.__set_type__(discount)
 
 class Item:
-    def __init__(self):
-        pass
+    def is_special(self):
+        return len(self.offers) > 0
+
+    def get_cost(self):
+        return self.price
+
+    def __init__(self, name, price, offers):
+        self.name = name
+        self.price = price
+        self.offers = offers
 
 class PriceTable:
     """
@@ -63,8 +71,8 @@ class PriceTable:
     the special offer list is built and then sorted by favourability to the customer
     """
     def __init__(self):
-        a_offers = [SpecialOffer('A', OfferType.DISCOUNT, (3, 130)),
-                    SpecialOffer('A', OfferType.DISCOUNT, (5, 200))]
+        a_offers = [SpecialOffer('A', OfferType.DISCOUNT, (5, 200)),
+                    SpecialOffer('A', OfferType.DISCOUNT, (3, 130))]
         a = Item('A', 50, a_offers)
         b_offers = [SpecialOffer('B', OfferType.DISCOUNT, (2, 45))]
         b = Item('B', 30, b_offers)
@@ -73,11 +81,7 @@ class PriceTable:
         e_offers = [SpecialOffer('E', OfferType.COMBO, (2, 'B', 1))]
         e = Item('E', 40, e_offers)
         self.skus = {'A': a, 'B': b, 'C': c, 'D': d, 'E': e}
-        self.special_offers = []
-        self.special_offers.append(SpecialOffer('B', OfferType.DISCOUNT, (2, 45)))
-        self.special_offers.append(SpecialOffer('E', OfferType.COMBO, (2, 'B', 1)))
-        self.special_offers.append(SpecialOffer('A', OfferType.DISCOUNT, (3, 130)))
-        self.special_offers.append(SpecialOffer('A', OfferType.DISCOUNT, (5, 200)))
+        self.special_offers = a_offers + e_offers + b_offers
         
 
 # noinspection PyUnusedLocal
@@ -106,6 +110,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

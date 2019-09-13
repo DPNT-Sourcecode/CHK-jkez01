@@ -13,10 +13,16 @@ class SpecialOffer:
     Types can be any of OfferType, discount describes what the offer is
     """
     def __set_discount__(self, discount):
-        return discount
+        if len(discount) < 2:
+            raise ValueError("Invalid DISCOUNT type")
+        self.number = discount[0]
+        self.cost = discount[1]
 
     def __set_combo__(self, discount):
-        return discount
+        if len(discount) < 2:
+            raise ValueError("Invalid COMBO type")
+        self.sku = discount[0]
+        self.ammount_free = discount[1]
 
     def __set_type__(self, type, discount):
         return {
@@ -25,7 +31,8 @@ class SpecialOffer:
         }.get(type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
 
     def __init__(self, type, discount):
-        self.offer = self.__set_type__(type, discount)
+        self.type = type
+        self.discount = self.__set_type__(type, discount)
 
 
 class PriceTable:
@@ -37,13 +44,13 @@ class PriceTable:
     the special offer list is built and then sorted by favourability to the customer
     """
     def __init__(self):
-        self.price_table = {'C': (20, False), 'D': (15, False)}
-        self.price_table['B'] = (30, [SpecialOffer(OfferType.DISCOUNT, (2, 45))])
-        self.price_table['E'] = (40, [SpecialOffer(OfferType.COMBO, ('B', 1))])
-        a_list = []
-        a_list.append(SpecialOffer(OfferType.DISCOUNT, (3, 130)))
-        a_list.append(SpecialOffer(OfferType.DISCOUNT, (5, 200)))
-        self.price_table['A'] = (50, a_list)
+        self.price_table = {'C': (20, False), 'D': (15, False), 'B':(30, True),
+        'E': (40, True), 'A': (50, True)}
+        self.special_offers = []
+        self.special_offers.append((SpecialOffer(OfferType.DISCOUNT, (2, 45)),'B'))
+        self.special_offers.append((SpecialOffer(OfferType.COMBO, ('B', 1)),'E'))
+        self.special_offers.append((SpecialOffer(OfferType.DISCOUNT, (3, 130)),'A'))
+        self.special_offers.append((SpecialOffer(OfferType.DISCOUNT, (5, 200)),'A'))
         
 
 # noinspection PyUnusedLocal
@@ -71,4 +78,5 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 

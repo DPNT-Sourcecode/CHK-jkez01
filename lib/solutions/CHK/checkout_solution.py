@@ -53,21 +53,21 @@ class SpecialOffer:
         if counters[self.sku] < self.number:
             return False
         return True
-'''
+
     def __get_discount_cost__(price):
         return self.number * price - self.cost 
 
     def __get_combo_cost__(price_table):
         return price_table[self.discounted_sku][0] * self.ammount_free 
 
-    def __get_cost_savings__(self, price_table):
+    def get_cost(self, prices):
         if self.sku not in price_table:
             raise ValueError("Price_table is missing sku for cost calculation")
         return {
             OfferType.DISCOUNT : lambda: self.__get_discount_cost__(price_table[self.sku][0]),
             OfferType.COMBO : lambda: self.__get_combo_cost__(price_table) 
         }.get(self.type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
-'''
+
     def __set_discount__(self, discount):
         if len(discount) < 2:
             raise ValueError("Invalid DISCOUNT type")
@@ -147,7 +147,7 @@ def checkout(skus):
                 special_sku_counter[item] = 1
         for offer in table.special_offers:
             while offer.is_applicable(special_sku_counter):
-                total += offer.get_cost()
+                total += offer.get_cost(table.skus)
                 special_sku_counter = offer.apply_special(special_sku_counter, offer)
         for item in special_sku_counter:
             if special_sku_counter[item] != 0:
@@ -156,5 +156,6 @@ def checkout(skus):
     except Exception as e:
         print(e)
         return -1
+
 
 

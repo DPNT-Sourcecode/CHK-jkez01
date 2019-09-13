@@ -161,10 +161,3 @@ def checkout(skus):
     except Exception as e:
         print(e)
         return -1
-
-
-
-
-
-
-

@@ -8,7 +8,7 @@ class TestCheckout():
         assert checkout_solution.checkout("") == 0
 
     def test_one_each(self):
-        assert checkout_solution.checkout("ABCDE") == 155
+        assert checkout_solution.checkout("ABCDEF") == 165
 
     def test_non_special(self):
         assert checkout_solution.checkout("C") == 20
@@ -34,11 +34,18 @@ class TestCheckout():
     def test_special_e_one_with_two_b(self):
         assert checkout_solution.checkout("EEBB") == 110
 
+    def test_two_f(self):
+        assert checkout_solution.checkout("FF") == 20
+
+    def test_three_f(self):
+        assert checkout_solution.checkout("FFF") == 20
+
+    def test_four_f(self):
+        assert checkout_solution.checkout("FFFF") == 30
+
     def test_bad_unknown(self):
-        assert checkout_solution.checkout("F") == -1
+        assert checkout_solution.checkout("G") == -1
 
     def test_bad_type(self):
         assert checkout_solution.checkout(3) == -1
-
-
 

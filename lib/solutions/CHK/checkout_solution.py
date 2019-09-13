@@ -52,11 +52,6 @@ class SpecialOffer:
 
 
 class PriceTable:
-
-    def __sorter_method__(self, offer, price_table):
-        return offer.__get_cost_savings__(price_table)
-        
-
     """
     Holds a price dictionary, and a special offer list:
     skus are the keys, values are a (price, boolean) tuple
@@ -72,7 +67,6 @@ class PriceTable:
         self.special_offers.append(SpecialOffer('E', OfferType.COMBO, (2, 'B', 1)))
         self.special_offers.append(SpecialOffer('A', OfferType.DISCOUNT, (3, 130)))
         self.special_offers.append(SpecialOffer('A', OfferType.DISCOUNT, (5, 200)))
-        self.special_offers.sort(key=self.__sorter_method__(self.price_table), reverse=True)
         
 
 # noinspection PyUnusedLocal
@@ -80,25 +74,27 @@ class PriceTable:
 def checkout(skus):
     table = PriceTable()
     total = 0
-    special_item_counter = {}
+    special_sku_counter = {}
     try:
         for item in skus:
-            if item not in price_data.price_table:
+            if item not in table.skus:
                 return -1
-            if not price_data.price_table[item][1]:
-                total += price_data.price_table[item][0]
-            elif item in special_item_counter:
-                special_item_counter[item] += 1
+            if not table.skus[item].is_special():
+                total += table.skus[item].get_cost()
+            elif item in special_sku_counter:
+                special_sku_counter[item] += 1
             else:
-                special_item_counter[item] = 1
-        for offer in price_data.special_offers:
-            if offer.is_applicable(special_item_counter):
-                total += offer.apply_cost()
-        for item in special_item_counter:
-            if special_item_counter[item] != 0:
-                total += special_item_counter[item] * price_data.price_table[item][0]
+                special_sku_counter[item] = 1
+        for offer in table.special_offers:
+            if offer.is_applicable(special_sku_counter):
+                total += offer.get_cost()
+                special_sku_counter = table.apply_special(special_sku_counter, offer)
+        for item in special_sku_counter:
+            if special_sku_counter[item] != 0:
+                total += special_sku_counter[item] * table.skus[item].get_cost()
         return total
     except Exception as e:
         return -1
+
 
 

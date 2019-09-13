@@ -144,9 +144,14 @@ def checkout(skus):
             else:
                 special_sku_counter[item] = 1
         for offer in table.special_offers:
+            print(offer.sku)
             while offer.is_applicable(special_sku_counter):
+                print('is applicable', total)
                 total += offer.get_cost(table.skus)
+                print('new total', total)
+                print(special_sku_counter)
                 special_sku_counter = offer.apply_special(special_sku_counter)
+                print(special_sku_counter)
         for item in special_sku_counter:
             if special_sku_counter[item] != 0:
                 total += special_sku_counter[item] * table.skus[item].get_cost()
@@ -154,6 +159,7 @@ def checkout(skus):
     except Exception as e:
         print(e)
         return -1
+
 
 
 

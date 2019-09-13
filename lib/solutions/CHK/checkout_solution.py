@@ -142,7 +142,9 @@ class PriceTable:
                 temp_offers = []
                 for offer in offers:
                     offer = offer.strip()
-                    if 'for' in offer:
+                    if 'buy' in offer:
+                        pass
+                    elif 'for' in offer:
                         offer = offer.split(' ')
                         position = 0
                         while offer[0][position].isnumeric():
@@ -193,10 +195,3 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
-
-
-
-
-
-
-

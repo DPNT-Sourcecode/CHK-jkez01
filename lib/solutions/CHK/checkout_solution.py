@@ -1,6 +1,5 @@
 from enum import Enum
 
-@unique
 class OfferType(Enum):
     DISCOUNT = 1
     COMBO = 2
@@ -19,14 +18,14 @@ class SpecialOffer:
     def __process_combo__(discount):
         return -discount
 
-    def __process_type__(type, discount):
+    def __process_type__(self, type, discount):
         return {
-            OfferType.DICOUNT : lambda: __process_discount__(discount),
+            OfferType.DISCOUNT : lambda: __process_discount__(discount),
             OfferType.COMBO : lambda: __process_combo__(discount) 
         }.get(type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
 
     def __init__(self, type, discount):
-        self.offer = __process_type__(type,discount)
+        self.offer = self.__process_type__(type, discount)
         
 
 # noinspection PyUnusedLocal
@@ -64,10 +63,13 @@ class PriceTable:
     if there is no special offer, the value is None
     """
     def __init__(self):
+        self.price_table = {'C': (20, None), 'D': (15, None)}
+        self.price_table
         special_A = SpecialOffer(3,130)
         special_B = SpecialOffer(2,45)
         self.price_table = {'A': (50, special_A),
                             'B': (30, special_B),
                             'C': (20, None),
                             'D': (15, None)}
+
 

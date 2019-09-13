@@ -50,6 +50,10 @@ class SpecialOffer:
         self.type = type
         self.discount = self.__set_type__(discount)
 
+class Item:
+
+    def __init__(self):
+        pass
 
 class PriceTable:
     """
@@ -95,6 +99,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

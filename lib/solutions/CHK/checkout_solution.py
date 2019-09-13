@@ -120,8 +120,10 @@ class PriceTable:
         d = Item('D', 15, [])
         e_offers = [SpecialOffer('E', OfferType.COMBO, (2, 'B', 1))]
         e = Item('E', 40, e_offers)
-        self.skus = {'A': a, 'B': b, 'C': c, 'D': d, 'E': e}
-        self.special_offers = a_offers + e_offers + b_offers
+        f_offers = [SpecialOffer('F', OfferType.COMBO, (3, 'F', 1))]
+        f = Item('F', 10, f_offers)
+        self.skus = {'A': a, 'B': b, 'C': c, 'D': d, 'E': e, 'F': f}
+        self.special_offers = a_offers + e_offers + b_offers + f_offers
         
 
 # noinspection PyUnusedLocal
@@ -159,6 +161,7 @@ def checkout(skus):
     except Exception as e:
         print(e)
         return -1
+
 
 
 

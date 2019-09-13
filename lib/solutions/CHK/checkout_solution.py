@@ -51,7 +51,6 @@ class SpecialOffer:
         self.discount = self.__set_type__(discount)
 
 class Item:
-
     def __init__(self):
         pass
 
@@ -64,8 +63,16 @@ class PriceTable:
     the special offer list is built and then sorted by favourability to the customer
     """
     def __init__(self):
-        self.price_table = {'C': (20, False), 'D': (15, False), 'B':(30, True),
-        'E': (40, True), 'A': (50, True)}
+        a_offers = [SpecialOffer('A', OfferType.DISCOUNT, (3, 130)),
+                    SpecialOffer('A', OfferType.DISCOUNT, (5, 200))]
+        a = Item('A', 50, a_offers)
+        b_offers = [SpecialOffer('B', OfferType.DISCOUNT, (2, 45))]
+        b = Item('B', 30, b_offers)
+        c = Item('C', 20, [])
+        d = Item('D', 15, [])
+        e_offers = [SpecialOffer('E', OfferType.COMBO, (2, 'B', 1))]
+        e = Item('E', 40, e_offers)
+        self.skus = {'A': a, 'B': b, 'C': c, 'D': d, 'E': e}
         self.special_offers = []
         self.special_offers.append(SpecialOffer('B', OfferType.DISCOUNT, (2, 45)))
         self.special_offers.append(SpecialOffer('E', OfferType.COMBO, (2, 'B', 1)))
@@ -99,6 +106,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

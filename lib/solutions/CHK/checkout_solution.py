@@ -154,6 +154,7 @@ class PriceTable:
                         while offer[0][position].isnumeric():
                             position+=1
                         temp_offers.append(SpecialOffer(offer[0][position:], OfferType.COMBO, (int(offer[0][:position]), offer[3], 1)))
+                        print(offer[0][position:], str((int(offer[0][:position]), offer[3], 1)))
                 temp_item = Item(line[1].strip(), int(line[2].strip()), temp_offers)
                 self.skus[line[1].strip()] = temp_item
                 self.special_offers += temp_offers
@@ -187,6 +188,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

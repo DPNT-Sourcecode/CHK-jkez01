@@ -46,7 +46,17 @@ class TestCheckout():
     def test_six_f(self):
         assert checkout_solution.checkout("FFFFFF") == 40
 
+    def test_three_nm(self):
+        assert checkout_solution.checkout("NNNM") == 120
+
+    def test_four_nm(self):
+        assert checkout_solution.checkout("NNNNM") == 160
+
+    def test_six_nm(self):
+        assert checkout_solution.checkout("NNNNNNMM") == 240
+
     def test_bad_type(self):
         assert checkout_solution.checkout(3) == -1
+
 
 

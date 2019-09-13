@@ -1,7 +1,20 @@
 # noinspection PyUnusedLocal
 # skus = unicode string
 def checkout(skus):
-    return -1
+    price_data = get_price_table_and_offers()
+    total = 0
+    special_item_counter = {}
+    try:
+        for item in skus:
+            if item not in price_data:
+                return -1
+            if price_data[item][1] is None:
+                total += price_data[item][0]
+            else:
+                pass
+        return total
+    except Exception as e:
+        return -1
 
 def get_price_table_and_offers():
     """
@@ -16,5 +29,6 @@ def get_price_table_and_offers():
               'C': (30, None),
               'D': (30, None)}
     return prices
+
 
 

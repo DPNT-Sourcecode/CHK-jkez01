@@ -16,13 +16,14 @@ class TestCheckout():
         assert checkout_solution.checkout("AAAA") == 180
 
     def test_bad_none(self):
-        assert checkout_solution.checkout("") == -1
+        assert checkout_solution.checkout("") == 0
 
     def test_bad_unknown(self):
         assert checkout_solution.checkout("E") == -1
 
     def test_bad_type(self):
         assert checkout_solution.checkout(3) == -1
+
 
 
 

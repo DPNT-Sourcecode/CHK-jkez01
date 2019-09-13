@@ -13,11 +13,14 @@ class SpecialOffer:
     Types can be any of OfferType, discount describes what the offer is
     """
     def is_applicable(self, counters):
-        return False
+        return {
+            OfferType.DISCOUNT : lambda: self.__is_applicable_discount__(counters),
+            OfferType.COMBO : lambda: self.__is_applicable_combo__(counters) 
+        }.get(self.type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
 
     def get_cost(self):
         return 0
-
+'''
     def __get_discount_cost__(price):
         return self.number * price - self.cost 
 
@@ -31,7 +34,7 @@ class SpecialOffer:
             OfferType.DISCOUNT : lambda: self.__get_discount_cost__(price_table[self.sku][0]),
             OfferType.COMBO : lambda: self.__get_combo_cost__(price_table) 
         }.get(self.type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
-
+'''
     def __set_discount__(self, discount):
         if len(discount) < 2:
             raise ValueError("Invalid DISCOUNT type")
@@ -120,11 +123,3 @@ def checkout(skus):
     except Exception as e:
         print(e)
         return -1
-
-
-
-
-
-
-
-

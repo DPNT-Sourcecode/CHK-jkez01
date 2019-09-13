@@ -143,7 +143,8 @@ class PriceTable:
                 for offer in offers:
                     offer = offer.strip()
                     if 'buy' in offer:
-                        pass
+                        offer = offer.split(' ')
+                        print(offer)
                     elif 'for' in offer:
                         offer = offer.split(' ')
                         position = 0
@@ -195,3 +196,4 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+

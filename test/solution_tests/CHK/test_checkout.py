@@ -5,7 +5,7 @@ import pytest
 class TestCheckout():
 
     def test_none(self):
-        assert checkout_solution.checkout("") == 0
+        assert checkout_solution.checkout("") == 1
 
     def test_one_each(self):
         assert checkout_solution.checkout("ABCDEF") == 165
@@ -57,4 +57,5 @@ class TestCheckout():
 
     def test_bad_type(self):
         assert checkout_solution.checkout(3) == -1
+
 

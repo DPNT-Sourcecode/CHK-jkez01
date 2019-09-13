@@ -21,8 +21,7 @@ class SpecialOffer:
 
     def __apply_combo__(self, counters):
         counters[self.sku] -= self.ammount_needed
-        if self.sku != self.discounted_sku:
-            counters[self.discounted_sku] -= self.ammount_free
+        counters[self.discounted_sku] -= self.ammount_free
         return counters
 
     def __apply_discount__(self, counters):
@@ -41,6 +40,8 @@ class SpecialOffer:
         if counters[self.sku] < self.ammount_needed:
             return False
         if self.sku == self.discounted_sku:
+            if counters[self.sku] < self.ammount_needed + 1:
+                return False
             return True
         if self.discounted_sku not in counters:
             return False
@@ -58,9 +59,7 @@ class SpecialOffer:
     def __get_discount_cost__(self, price):
         return self.cost 
 
-    def __get_combo_cost__(self, skus):
-        if self.sku == self.discounted_sku:
-            return skus[self.sku].price * (self.ammount_needed - self.ammount_free) 
+    def __get_combo_cost__(self, skus): 
         return skus[self.sku].price * self.ammount_needed 
 
     def get_cost(self, skus):
@@ -178,20 +177,16 @@ def checkout(skus):
                 special_sku_counter[item] += 1
             else:
                 special_sku_counter[item] = 1
-        print(total)
         for offer in table.special_offers:
             while offer.is_applicable(special_sku_counter):
-                print(offer.sku, total)
                 total += offer.get_cost(table.skus)
                 special_sku_counter = offer.apply_special(special_sku_counter)
-                print(special_sku_counter, total, offer.sku)
-        print(special_sku_counter, total)
         for item in special_sku_counter:
             if special_sku_counter[item] != 0:
                 total += special_sku_counter[item] * table.skus[item].price
-        print(special_sku_counter, total)
         return total
     except Exception as e:
         return -1
+
 
 

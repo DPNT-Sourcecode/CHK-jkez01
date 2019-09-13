@@ -12,14 +12,18 @@ class SpecialOffer:
     Describes a special offer for an SKU
     Types can be any of OfferType, discount describes what the offer is
     """
-    def __get_discount_cost__(price)
+    def __get_discount_cost__(price):
+        return self.number * price - self.cost 
+
+    def __get_combo_cost__(price_table):
+        return price_table[self.discounted_sku][0] * self.ammount_free 
 
     def __get_cost_savings__(self, price_table):
         if self.sku not in price_table:
             raise ValueError("Price_table is missing sku for cost calculation")
         return {
             OfferType.DISCOUNT : lambda: self.__get_discount_cost__(price_table[self.sku][0]),
-            OfferType.COMBO : lambda: self.__get_combo_cost__(price_table[self.sku][0]) 
+            OfferType.COMBO : lambda: self.__get_combo_cost__(price_table) 
         }.get(self.type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
 
     def __set_discount__(self, discount):
@@ -29,10 +33,11 @@ class SpecialOffer:
         self.cost = discount[1]
 
     def __set_combo__(self, discount):
-        if len(discount) < 2:
+        if len(discount) < 3:
             raise ValueError("Invalid COMBO type")
-        self.discounted_sku = discount[0]
-        self.ammount_free = discount[1]
+        self.ammount_needed = discount[0]
+        self.discounted_sku = discount[1]
+        self.ammount_free = discount[2]
 
     def __set_type__(self, discount):
         return {
@@ -59,7 +64,7 @@ class PriceTable:
         'E': (40, True), 'A': (50, True)}
         self.special_offers = []
         self.special_offers.append((SpecialOffer('B', OfferType.DISCOUNT, (2, 45))))
-        self.special_offers.append((SpecialOffer('E', OfferType.COMBO, ('B', 1))))
+        self.special_offers.append((SpecialOffer('E', OfferType.COMBO, (2, 'B', 1))))
         self.special_offers.append((SpecialOffer('A', OfferType.DISCOUNT, (3, 130))))
         self.special_offers.append((SpecialOffer('A', OfferType.DISCOUNT, (5, 200))))
         
@@ -89,6 +94,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

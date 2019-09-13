@@ -12,8 +12,6 @@ class SpecialOffer:
     Describes a special offer for an SKU
     Types can be any of OfferType, discount describes what the offer is
     """
-    def get_cost(self):
-        return 0
 
     def apply_special(self, counters):
         return {
@@ -54,18 +52,18 @@ class SpecialOffer:
             return False
         return True
 
-    def __get_discount_cost__(price):
-        return self.number * price - self.cost 
+    def __get_discount_cost__(self, price):
+        return self.cost 
 
-    def __get_combo_cost__(price_table):
-        return price_table[self.discounted_sku][0] * self.ammount_free 
+    def __get_combo_cost__(self, skus):
+        return skus[self.sku].price * self.ammount_needed 
 
-    def get_cost(self, prices):
-        if self.sku not in price_table:
+    def get_cost(self, skus):
+        if self.sku not in skus:
             raise ValueError("Price_table is missing sku for cost calculation")
         return {
-            OfferType.DISCOUNT : lambda: self.__get_discount_cost__(price_table[self.sku][0]),
-            OfferType.COMBO : lambda: self.__get_combo_cost__(price_table) 
+            OfferType.DISCOUNT : lambda: self.__get_discount_cost__(skus[self.sku].price),
+            OfferType.COMBO : lambda: self.__get_combo_cost__(skus) 
         }.get(self.type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
 
     def __set_discount__(self, discount):
@@ -148,7 +146,7 @@ def checkout(skus):
         for offer in table.special_offers:
             while offer.is_applicable(special_sku_counter):
                 total += offer.get_cost(table.skus)
-                special_sku_counter = offer.apply_special(special_sku_counter, offer)
+                special_sku_counter = offer.apply_special(special_sku_counter)
         for item in special_sku_counter:
             if special_sku_counter[item] != 0:
                 total += special_sku_counter[item] * table.skus[item].get_cost()
@@ -156,6 +154,7 @@ def checkout(skus):
     except Exception as e:
         print(e)
         return -1
+
 
 
 

@@ -21,7 +21,8 @@ class SpecialOffer:
 
     def __apply_combo__(self, counters):
         counters[self.sku] -= self.ammount_needed
-        counters[self.discounted_sku] -= self.ammount_free
+        if self.sku != self.discounted_sku:
+            counters[self.discounted_sku] -= self.ammount_free
         return counters
 
     def __apply_discount__(self, counters):
@@ -39,6 +40,8 @@ class SpecialOffer:
             return False
         if counters[self.sku] < self.ammount_needed:
             return False
+        if self.sku == self.discounted_sku:
+            return True
         if self.discounted_sku not in counters:
             return False
         if counters[self.discounted_sku] < self.ammount_free:
@@ -163,4 +166,5 @@ def checkout(skus):
     except Exception as e:
         print(e)
         return -1
+
 

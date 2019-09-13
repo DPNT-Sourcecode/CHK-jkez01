@@ -137,24 +137,12 @@ class PriceTable:
                         position = 0
                         while offer[0][position].isnumeric():
                             position+=1
-                        temp_offers.append(SpecialOffer(offer[0][position:], OfferType.COMBO, (int(offer[0][:position]), offer[3], 1))))
-
-        a_offers = [SpecialOffer('A', OfferType.DISCOUNT, (5, 200)),
-                    SpecialOffer('A', OfferType.DISCOUNT, (3, 130))]
-        a = Item('A', 50, a_offers)
-        b_offers = [SpecialOffer('B', OfferType.DISCOUNT, (2, 45))]
-        b = Item('B', 30, b_offers)
-        c = Item('C', 10, [])
-        d = Item('D', 15, [])
-        e_offers = [SpecialOffer('E', OfferType.COMBO, (2, 'B', 1))]
-        e = Item('E', 40, e_offers)
-        f_offers = [SpecialOffer('F', OfferType.COMBO, (3, 'F', 1))]
-        f = Item('F', 10, f_offers)
-        g = Item('G', 20, [])
-        h_offers = [SpecialOffer('H', OfferType.DISCOUNT, (10, 80)),
-                    SpecialOffer('H', OfferType.DISCOUNT, (5, 45))]
-        h = Item('H', 10, h_offers)
-        i = Item('I', 35, [])
+                        temp_offers.append(SpecialOffer(offer[0][position:], OfferType.COMBO, (int(offer[0][:position]), offer[3], 1)))
+                temp_item = Item(line[1].strip(), int(line[2].strip()), temp_offers)
+                self.skus[line[1].strip()] = temp_item
+                self.special_offers.append(temp_offers)
+        print(self.skus)
+        print(temp_offers)
         
 
 # noinspection PyUnusedLocal
@@ -183,6 +171,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

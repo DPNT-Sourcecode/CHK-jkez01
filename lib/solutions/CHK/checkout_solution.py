@@ -17,6 +17,9 @@ def checkout(skus):
                     total += price_data.price_table[item][1].cost
             else:
                 special_item_counter[item] = 1
+        for item in special_item_counter:
+            if special_item_counter[item] != 0:
+                total += special_item_counter[item] * price_data.price_table[item][0]
         return total
     except Exception as e:
         return -1
@@ -48,6 +51,7 @@ class PriceTable:
                             'B': (30, special_B),
                             'C': (20, None),
                             'D': (15, None)}
+
 
 
 

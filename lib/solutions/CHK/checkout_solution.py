@@ -141,8 +141,8 @@ class PriceTable:
                 temp_item = Item(line[1].strip(), int(line[2].strip()), temp_offers)
                 self.skus[line[1].strip()] = temp_item
                 self.special_offers.append(temp_offers)
-        print(self.skus)
-        print(temp_offers)
+        for sku in self.skus:
+            print(self.skus[sku].name, self.skus[sku].price)
         
 
 # noinspection PyUnusedLocal
@@ -171,6 +171,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

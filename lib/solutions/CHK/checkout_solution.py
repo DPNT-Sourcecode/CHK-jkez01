@@ -20,6 +20,24 @@ class SpecialOffer:
 
     def get_cost(self):
         return 0
+
+    def __is_applicable_combo__(self, counters):
+        if self.sku not in counters:
+            return False
+        if counters[self.sku] < self.ammount_needed:
+            return False
+        if self.discounted_sku not in counters:
+            return False
+        if counters[self.discounted_sku] < self.ammount_free:
+            return False
+        return True
+
+    def __is_applicable_discount__(self, counters):
+        if self.sku not in counters:
+            return False
+        if counters[self.sku] < self.number:
+            return False
+        return True
 '''
     def __get_discount_cost__(price):
         return self.number * price - self.cost 
@@ -123,3 +141,4 @@ def checkout(skus):
     except Exception as e:
         print(e)
         return -1
+

@@ -1,9 +1,33 @@
-from enum import enum
+from enum import Enum
 
 @unique
 class OfferType(Enum):
     DISCOUNT = 1
     COMBO = 2
+
+def raise_value_error(message):
+    raise ValueError(message)
+
+class SpecialOffer:
+    """
+    Describes a special offer for an SKU
+    Types can be any of OfferType, discount describes what the offer is
+    """
+    def __process_discount__(discount):
+        return discount
+
+    def __process_combo__(discount):
+        return -discount
+
+    def __process_type__(type, discount):
+        return {
+            OfferType.DICOUNT : lambda: __process_discount__(discount),
+            OfferType.COMBO : lambda: __process_combo__(discount) 
+        }.get(type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
+
+    def __init__(self, type, discount):
+        self.offer = __process_type__(type,discount)
+        
 
 # noinspection PyUnusedLocal
 # skus = unicode string
@@ -32,18 +56,6 @@ def checkout(skus):
         return -1
 
 
-class SpecialOffer:
-    """
-    An object that holds (n,y)
-    where n is number of that sku, and y is the cost in pounds
-    """
-    def __init__(self, type, discount):
-        if number == 1:
-            raise ValueError("Number must be an integer greater than 1")
-        self.number = number
-        self.cost = cost
-
-
 class PriceTable:
     """
     Holds a price dictionary:
@@ -58,3 +70,4 @@ class PriceTable:
                             'B': (30, special_B),
                             'C': (20, None),
                             'D': (15, None)}
+

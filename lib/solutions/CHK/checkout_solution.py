@@ -90,6 +90,22 @@ class SpecialOffer:
             OfferType.COMBO : lambda: self.__set_combo__(discount) 
         }.get(self.type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
 
+    def __get_discount_savings__(self, price):
+        return self.number * price - self.cost 
+
+    def __get_combo_savings__(self, skus):
+        if self.sku == self.discounted_sku:
+            return skus[self.sku].price 
+        return skus[self.discounted_sku].price * self.ammount_needed 
+
+    def get_savings(self, skus):
+        if self.sku not in skus:
+            raise ValueError("Price_table is missing sku for savings calculation")
+        return {
+            OfferType.DISCOUNT : lambda: self.__get_discount_savings__(skus[self.sku].price),
+            OfferType.COMBO : lambda: self.__get_combo_savings__(skus) 
+        }.get(self.type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
+
     def __init__(self, sku, type, discount):
         self.sku = sku
         self.type = type
@@ -98,9 +114,6 @@ class SpecialOffer:
 class Item:
     def is_special(self):
         return len(self.offers) > 0
-
-    def get_cost(self):
-        return self.price
 
     def __init__(self, name, price, offers):
         self.name = name
@@ -141,8 +154,9 @@ class PriceTable:
                 temp_item = Item(line[1].strip(), int(line[2].strip()), temp_offers)
                 self.skus[line[1].strip()] = temp_item
                 self.special_offers.append(temp_offers)
-        for sku in self.skus:
-            print(self.skus[sku].name, self.skus[sku].price)
+        print(self.special_offers)
+        self.special_offers = sorted(self.special_offers, key=self.get_savings(self.skus), reverse=True)
+        
         
 
 # noinspection PyUnusedLocal
@@ -156,7 +170,7 @@ def checkout(skus):
             if item not in table.skus:
                 return -1
             if not table.skus[item].is_special():
-                total += table.skus[item].get_cost()
+                total += table.skus[item].price
             elif item in special_sku_counter:
                 special_sku_counter[item] += 1
             else:
@@ -167,10 +181,11 @@ def checkout(skus):
                 special_sku_counter = offer.apply_special(special_sku_counter)
         for item in special_sku_counter:
             if special_sku_counter[item] != 0:
-                total += special_sku_counter[item] * table.skus[item].get_cost()
+                total += special_sku_counter[item] * table.skus[item].price
         return total
     except Exception as e:
         return -1
+
 
 
 

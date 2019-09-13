@@ -116,11 +116,17 @@ class PriceTable:
     the special offer list is built and then sorted by favourability to the customer
     """
     def __init__(self):
+        self.skus = {}
+        self.special_offers = []
         with open('lib/solutions/CHK/input.txt', 'r') as f:
             lines = f.readlines()
             for line in lines:
                 line = line.strip().split('|')
-                print(line)
+                offers = line[3].strip().split(',')
+                for offer in offers:
+                    offer = offer.strip()
+                    if 'for' in offer:
+                        print(offer)
         a_offers = [SpecialOffer('A', OfferType.DISCOUNT, (5, 200)),
                     SpecialOffer('A', OfferType.DISCOUNT, (3, 130))]
         a = Item('A', 50, a_offers)
@@ -137,33 +143,6 @@ class PriceTable:
                     SpecialOffer('H', OfferType.DISCOUNT, (5, 45))]
         h = Item('H', 10, h_offers)
         i = Item('I', 35, [])
-        j = Item('J', 60, [])
-        k_offers = [SpecialOffer('K', OfferType.DISCOUNT, (2, 150))]
-        k = Item('K', 80, k_offers)
-        l = Item('L', 90, [])
-        m = Item('M', 15, [])
-        n_offers = [SpecialOffer('N', OfferType.COMBO, (3, 'M', 1))]
-        n = Item('N', 40, n_offers)
-        o = Item('O', 10, [])
-        n_offers = [SpecialOffer('N', OfferType.COMBO, (3, 'M', 1))]
-        n = Item('N', 40, n_offers)
-        n_offers = [SpecialOffer('N', OfferType.COMBO, (3, 'M', 1))]
-        n = Item('N', 40, n_offers)
-        n_offers = [SpecialOffer('N', OfferType.COMBO, (3, 'M', 1))]
-        n = Item('N', 40, n_offers)
-        s = Item('S', 30, [])
-        t = Item('T', 20, [])
-        n_offers = [SpecialOffer('N', OfferType.COMBO, (3, 'M', 1))]
-        n = Item('N', 40, n_offers)
-        v_offers = [SpecialOffer('V', OfferType.DISCOUNT, (3, 130)),
-                    SpecialOffer('V', OfferType.DISCOUNT, (2, 90))]
-        v = Item('V', 50, v_offers)
-        w = Item('W', 20, [])
-        x = Item('X', 90, [])
-        y = Item('Y', 10, [])
-        z = Item('Z', 50, [])
-        self.skus = {'A': a, 'B': b, 'C': c, 'D': d, 'E': e, 'F': f}
-        self.special_offers = a_offers + e_offers + b_offers + f_offers
         
 
 # noinspection PyUnusedLocal
@@ -192,3 +171,4 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+

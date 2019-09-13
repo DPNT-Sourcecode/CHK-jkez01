@@ -112,13 +112,12 @@ class SpecialOffer:
         self.discount = self.__set_type__(discount)
 
 class Item:
-    def is_special(self):
-        return len(self.offers) > 0
 
-    def __init__(self, name, price, offers):
+    def __init__(self, name, price, offers, is_special):
         self.name = name
         self.price = price
         self.offers = offers
+        self.is_special = is_special
 
 class PriceTable:
     """
@@ -155,6 +154,7 @@ class PriceTable:
                         while offer[0][position].isnumeric():
                             position+=1
                         temp_offers.append(SpecialOffer(offer[0][position:], OfferType.COMBO, (int(offer[0][:position]), offer[3], 1)))
+                        if 
                 temp_item = Item(line[1].strip(), int(line[2].strip()), temp_offers)
                 self.skus[line[1].strip()] = temp_item
                 self.special_offers += temp_offers
@@ -172,7 +172,7 @@ def checkout(skus):
         for item in skus:
             if item not in table.skus:
                 return -1
-            if not table.skus[item].is_special():
+            if not table.skus[item].is_special:
                 total += table.skus[item].price
             elif item in special_sku_counter:
                 special_sku_counter[item] += 1
@@ -189,6 +189,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

@@ -116,9 +116,10 @@ class PriceTable:
     the special offer list is built and then sorted by favourability to the customer
     """
     def __init__(self):
-        with open('input.txt', 'r') as f:
+        with open('lib/solutions/CHK/input.txt', 'r') as f:
             lines = f.readlines()
             for line in lines:
+                line = line.strip().split('|')
                 print(line)
         a_offers = [SpecialOffer('A', OfferType.DISCOUNT, (5, 200)),
                     SpecialOffer('A', OfferType.DISCOUNT, (3, 130))]
@@ -191,6 +192,3 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
-
-
-

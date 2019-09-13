@@ -36,5 +36,3 @@ class TestSum():
     def test_bad_left_float(self):
         with pytest.raises(ValueError):
             sum_solution.compute(1.2,0)
-
-

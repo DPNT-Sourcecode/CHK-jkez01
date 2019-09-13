@@ -6,5 +6,3 @@ def compute(x, y):
         return int(x) + int(y)
     except Exception as e:
         raise(e)
-
-

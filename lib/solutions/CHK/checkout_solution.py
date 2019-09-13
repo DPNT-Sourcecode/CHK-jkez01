@@ -12,14 +12,29 @@ class SpecialOffer:
     Describes a special offer for an SKU
     Types can be any of OfferType, discount describes what the offer is
     """
+    def get_cost(self):
+        return 0
+
+    def apply_special(self, counters):
+        return {
+            OfferType.DISCOUNT : lambda: self.__apply_discount__(counters),
+            OfferType.COMBO : lambda: self.__apply_combo__(counters) 
+        }.get(self.type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
+
+    def __apply_combo__(self, counters):
+        counters[self.sku] -= self.ammount_needed
+        counters[self.discounted_sku] -= self.ammount_free
+        return counters
+
+    def __apply_discount__(self, counters):
+        counters[self.sku] -= self.number
+        return counters
+
     def is_applicable(self, counters):
         return {
             OfferType.DISCOUNT : lambda: self.__is_applicable_discount__(counters),
             OfferType.COMBO : lambda: self.__is_applicable_combo__(counters) 
         }.get(self.type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
-
-    def get_cost(self):
-        return 0
 
     def __is_applicable_combo__(self, counters):
         if self.sku not in counters:
@@ -133,7 +148,7 @@ def checkout(skus):
         for offer in table.special_offers:
             while offer.is_applicable(special_sku_counter):
                 total += offer.get_cost()
-                special_sku_counter = table.apply_special(special_sku_counter, offer)
+                special_sku_counter = offer.apply_special(special_sku_counter, offer)
         for item in special_sku_counter:
             if special_sku_counter[item] != 0:
                 total += special_sku_counter[item] * table.skus[item].get_cost()
@@ -141,4 +156,5 @@ def checkout(skus):
     except Exception as e:
         print(e)
         return -1
+
 

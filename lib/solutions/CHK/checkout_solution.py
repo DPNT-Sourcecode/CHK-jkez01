@@ -69,8 +69,3 @@ class PriceTable:
         a_list.append(SpecialOffer(OfferType.DISCOUNT, (3, 130)))
         a_list.append(SpecialOffer(OfferType.DISCOUNT, (5, 200)))
         self.price_table['A'] = (50, a_list)
-
-
-
-
-

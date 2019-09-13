@@ -116,17 +116,74 @@ class PriceTable:
     the special offer list is built and then sorted by favourability to the customer
     """
     def __init__(self):
+        table_text = """| A    | 50    | 3A for 130, 5A for 200 |
+| B    | 30    | 2B for 45              |
+| C    | 20    |                        |
+| D    | 15    |                        |
+| E    | 40    | 2E get one B free      |
+| F    | 10    | 2F get one F free      |
+| G    | 20    |                        |
+| H    | 10    | 5H for 45, 10H for 80  |
+| I    | 35    |                        |
+| J    | 60    |                        |
+| K    | 80    | 2K for 150             |
+| L    | 90    |                        |
+| M    | 15    |                        |
+| N    | 40    | 3N get one M free      |
+| O    | 10    |                        |
+| P    | 50    | 5P for 200             |
+| Q    | 30    | 3Q for 80              |
+| R    | 50    | 3R get one Q free      |
+| S    | 30    |                        |
+| T    | 20    |                        |
+| U    | 40    | 3U get one U free      |
+| V    | 50    | 2V for 90, 3V for 130  |
+| W    | 20    |                        |
+| X    | 90    |                        |
+| Y    | 10    |                        |
+| Z    | 50    |                        |"""
+        print(table_text)
         a_offers = [SpecialOffer('A', OfferType.DISCOUNT, (5, 200)),
                     SpecialOffer('A', OfferType.DISCOUNT, (3, 130))]
         a = Item('A', 50, a_offers)
         b_offers = [SpecialOffer('B', OfferType.DISCOUNT, (2, 45))]
         b = Item('B', 30, b_offers)
-        c = Item('C', 20, [])
+        c = Item('C', 10, [])
         d = Item('D', 15, [])
         e_offers = [SpecialOffer('E', OfferType.COMBO, (2, 'B', 1))]
         e = Item('E', 40, e_offers)
         f_offers = [SpecialOffer('F', OfferType.COMBO, (3, 'F', 1))]
         f = Item('F', 10, f_offers)
+        g = Item('G', 20, [])
+        h_offers = [SpecialOffer('H', OfferType.DISCOUNT, (10, 80)),
+                    SpecialOffer('H', OfferType.DISCOUNT, (5, 45))]
+        h = Item('H', 10, h_offers)
+        i = Item('I', 35, [])
+        j = Item('J', 60, [])
+        k_offers = [SpecialOffer('K', OfferType.DISCOUNT, (2, 150))]
+        k = Item('K', 80, k_offers)
+        l = Item('L', 90, [])
+        m = Item('M', 15, [])
+        n_offers = [SpecialOffer('N', OfferType.COMBO, (3, 'M', 1))]
+        n = Item('N', 40, n_offers)
+        o = Item('O', 10, [])
+        n_offers = [SpecialOffer('N', OfferType.COMBO, (3, 'M', 1))]
+        n = Item('N', 40, n_offers)
+        n_offers = [SpecialOffer('N', OfferType.COMBO, (3, 'M', 1))]
+        n = Item('N', 40, n_offers)
+        n_offers = [SpecialOffer('N', OfferType.COMBO, (3, 'M', 1))]
+        n = Item('N', 40, n_offers)
+        s = Item('S', 30, [])
+        t = Item('T', 20, [])
+        n_offers = [SpecialOffer('N', OfferType.COMBO, (3, 'M', 1))]
+        n = Item('N', 40, n_offers)
+        v_offers = [SpecialOffer('V', OfferType.DISCOUNT, (3, 130)),
+                    SpecialOffer('V', OfferType.DISCOUNT, (2, 90))]
+        v = Item('V', 50, v_offers)
+        w = Item('W', 20, [])
+        x = Item('X', 90, [])
+        y = Item('Y', 10, [])
+        z = Item('Z', 50, [])
         self.skus = {'A': a, 'B': b, 'C': c, 'D': d, 'E': e, 'F': f}
         self.special_offers = a_offers + e_offers + b_offers + f_offers
         
@@ -166,5 +223,6 @@ def checkout(skus):
     except Exception as e:
         print(e)
         return -1
+
 
 

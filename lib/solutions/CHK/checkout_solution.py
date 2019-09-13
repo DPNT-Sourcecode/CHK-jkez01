@@ -56,6 +56,8 @@ class SpecialOffer:
         return self.cost 
 
     def __get_combo_cost__(self, skus):
+        if self.sku == self.discounted_sku:
+            return skus[self.sku].price * (self.ammount_needed - self.ammount_free) 
         return skus[self.sku].price * self.ammount_needed 
 
     def get_cost(self, skus):
@@ -161,3 +163,4 @@ def checkout(skus):
     except Exception as e:
         print(e)
         return -1
+

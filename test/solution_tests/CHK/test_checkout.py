@@ -12,6 +12,9 @@ class TestCheckout():
     def test_special(self):
         assert checkout_solution.checkout("AAA") == 130
 
+    def test_non_special(self):
+        assert checkout_solution.checkout("C") == 20
+
     def test_special_plus_one(self):
         assert checkout_solution.checkout("AAAA") == 180
 
@@ -23,6 +26,7 @@ class TestCheckout():
 
     def test_bad_type(self):
         assert checkout_solution.checkout(3) == -1
+
 
 
 

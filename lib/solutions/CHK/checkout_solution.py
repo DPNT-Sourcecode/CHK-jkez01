@@ -26,9 +26,10 @@ def get_price_table_and_offers():
     """
     prices = {'A': (50, (3,130)),
               'B': (30, (2,45)),
-              'C': (30, None),
-              'D': (30, None)}
+              'C': (20, None),
+              'D': (15, None)}
     return prices
+
 
 
 

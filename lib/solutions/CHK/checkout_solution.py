@@ -95,10 +95,7 @@ class Item:
         return len(self.offers) > 0
 
     def get_cost(self):
-        if not self.is_special():
-            return self.price
-        else:
-            return 0
+        return self.price
 
     def __init__(self, name, price, offers):
         self.name = name
@@ -152,13 +149,17 @@ def checkout(skus):
                 print(special_sku_counter)
                 special_sku_counter = offer.apply_special(special_sku_counter)
                 print(special_sku_counter)
+        print(total, special_sku_counter)
         for item in special_sku_counter:
             if special_sku_counter[item] != 0:
+                print(item)
                 total += special_sku_counter[item] * table.skus[item].get_cost()
+        print(total, special_sku_counter)
         return total
     except Exception as e:
         print(e)
         return -1
+
 
 
 

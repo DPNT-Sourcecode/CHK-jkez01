@@ -3,7 +3,7 @@ import pytest
 
 
 class TestCheckout():
-    '''
+
     def test_none(self):
         assert checkout_solution.checkout("") == 0
 
@@ -20,7 +20,7 @@ class TestCheckout():
         assert checkout_solution.checkout("AAAAA") == 200
 
     def test_special_a_both(self):
-        assert checkout_solution.checkout("AAAAAAAA") == 430
+        assert checkout_solution.checkout("AAAAAAAA") == 330
 
     def test_special_b_one(self):
         assert checkout_solution.checkout("BB") == 45
@@ -30,7 +30,7 @@ class TestCheckout():
 
     def test_special_e_one_with_one_b(self):
         assert checkout_solution.checkout("EEB") == 80
-'''
+
     def test_special_e_one_with_two_b(self):
         assert checkout_solution.checkout("EEBB") == 110
 
@@ -39,5 +39,6 @@ class TestCheckout():
 
     def test_bad_type(self):
         assert checkout_solution.checkout(3) == -1
+
 
 

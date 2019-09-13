@@ -12,20 +12,20 @@ class SpecialOffer:
     Describes a special offer for an SKU
     Types can be any of OfferType, discount describes what the offer is
     """
-    def __process_discount__(discount):
+    def __set_discount__(discount):
         return discount
 
-    def __process_combo__(discount):
+    def __set_combo__(discount):
         return -discount
 
-    def __process_type__(self, type, discount):
+    def __set_type__(self, type, discount):
         return {
-            OfferType.DISCOUNT : lambda: __process_discount__(discount),
-            OfferType.COMBO : lambda: __process_combo__(discount) 
+            OfferType.DISCOUNT : lambda: __set_discount__(discount),
+            OfferType.COMBO : lambda: __set_combo__(discount) 
         }.get(type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
 
     def __init__(self, type, discount):
-        self.offer = self.__process_type__(type, discount)
+        self.offer = self.__set_type__(type, discount)
         
 
 # noinspection PyUnusedLocal
@@ -58,20 +58,18 @@ def checkout(skus):
 class PriceTable:
     """
     Holds a price dictionary:
-    skus are the keys, values are a (price, SpecialOffer) tuple
-    price is a number, while SpecialOffer is an object
-    if there is no special offer, the value is None
+    skus are the keys, values are a (price, [SpecialOffer]) tuple
+    price is a number, while [SpecialOffer] is a list of objects
     """
     def __init__(self):
         self.price_table = {'C': (20, []), 'D': (15, [])}
         self.price_table['B'] = (30, [SpecialOffer(OfferType.DISCOUNT, (2, 45))])
         self.price_table['E'] = (40, [SpecialOffer(OfferType.COMBO, ('B', 1))])
-        special_A = SpecialOffer(3,130)
-        special_B = SpecialOffer(2,45)
-        self.price_table = {'A': (50, special_A),
-                            'B': (30, special_B),
-                            'C': (20, None),
-                            'D': (15, None)}
+        a_list = []
+        a_list.append(SpecialOffer(OfferType.DISCOUNT, (3, 130)))
+        a_list.append(SpecialOffer(OfferType.DISCOUNT, (5, 200)))
+        self.price_table['A'] = (50, a_list)
+
 
 
 

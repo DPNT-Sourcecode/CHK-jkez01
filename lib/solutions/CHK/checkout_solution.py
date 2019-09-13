@@ -158,15 +158,7 @@ class PriceTable:
                 temp_item = Item(line[1].strip(), int(line[2].strip()), temp_offers)
                 self.skus[line[1].strip()] = temp_item
                 self.special_offers += temp_offers
-        first = []
-        for i in self.special_offers:
-            first.append((i.sku, i.type))
-        print(first)
         self.special_offers = sorted(self.special_offers, key=self.__sorting_helper__, reverse=True)
-        first = []
-        for i in self.special_offers:
-            first.append((i.sku, i.type))
-        print(first)
         
         
 
@@ -196,3 +188,4 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+

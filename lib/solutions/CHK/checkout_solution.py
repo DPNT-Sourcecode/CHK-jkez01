@@ -63,13 +63,15 @@ class PriceTable:
     if there is no special offer, the value is None
     """
     def __init__(self):
-        self.price_table = {'C': (20, None), 'D': (15, None)}
-        self.price_table
+        self.price_table = {'C': (20, []), 'D': (15, [])}
+        self.price_table['B'] = (30, [SpecialOffer(OfferType.DISCOUNT, (2, 45))])
+        self.price_table['E'] = (40, [SpecialOffer(OfferType.COMBO, ('B', 1))])
         special_A = SpecialOffer(3,130)
         special_B = SpecialOffer(2,45)
         self.price_table = {'A': (50, special_A),
                             'B': (30, special_B),
                             'C': (20, None),
                             'D': (15, None)}
+
 
 

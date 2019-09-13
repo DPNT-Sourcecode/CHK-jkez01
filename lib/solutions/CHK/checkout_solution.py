@@ -12,16 +12,16 @@ class SpecialOffer:
     Describes a special offer for an SKU
     Types can be any of OfferType, discount describes what the offer is
     """
-    def __set_discount__(discount):
+    def __set_discount__(self, discount):
         return discount
 
-    def __set_combo__(discount):
-        return -discount
+    def __set_combo__(self, discount):
+        return discount
 
     def __set_type__(self, type, discount):
         return {
-            OfferType.DISCOUNT : lambda: __set_discount__(discount),
-            OfferType.COMBO : lambda: __set_combo__(discount) 
+            OfferType.DISCOUNT : lambda: self.__set_discount__(discount),
+            OfferType.COMBO : lambda: self.__set_combo__(discount) 
         }.get(type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
 
     def __init__(self, type, discount):
@@ -69,6 +69,7 @@ class PriceTable:
         a_list.append(SpecialOffer(OfferType.DISCOUNT, (3, 130)))
         a_list.append(SpecialOffer(OfferType.DISCOUNT, (5, 200)))
         self.price_table['A'] = (50, a_list)
+
 
 
 

@@ -1,3 +1,10 @@
+from enum import enum
+
+@unique
+class OfferType(Enum):
+    DISCOUNT = 1
+    COMBO = 2
+
 # noinspection PyUnusedLocal
 # skus = unicode string
 def checkout(skus):
@@ -30,7 +37,7 @@ class SpecialOffer:
     An object that holds (n,y)
     where n is number of that sku, and y is the cost in pounds
     """
-    def __init__(self, number, cost):
+    def __init__(self, type, discount):
         if number == 1:
             raise ValueError("Number must be an integer greater than 1")
         self.number = number
@@ -51,3 +58,4 @@ class PriceTable:
                             'B': (30, special_B),
                             'C': (20, None),
                             'D': (15, None)}
+

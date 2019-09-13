@@ -53,8 +53,9 @@ class SpecialOffer:
 
 class PriceTable:
 
-    def __sorter_method__():
-        pass
+    def __sorter_method__(offer, price_table):
+        return offer.__get_cost_savings__(price_table)
+        
 
     """
     Holds a price dictionary, and a special offer list:
@@ -71,7 +72,7 @@ class PriceTable:
         self.special_offers.append((SpecialOffer('E', OfferType.COMBO, (2, 'B', 1))))
         self.special_offers.append((SpecialOffer('A', OfferType.DISCOUNT, (3, 130))))
         self.special_offers.append((SpecialOffer('A', OfferType.DISCOUNT, (5, 200))))
-        self.special_offers.sort(key=__sorter_method__(), reverse=True)
+        self.special_offers.sort(key=self.__sorter_method__(self.price_table), reverse=True)
         
 
 # noinspection PyUnusedLocal
@@ -99,6 +100,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

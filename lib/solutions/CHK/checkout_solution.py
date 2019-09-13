@@ -20,6 +20,7 @@ class SpecialOffer:
         }.get(self.type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
 
     def __apply_combo__(self, counters):
+        print(self.sku, self.ammount_needed, self.discounted_sku, self.ammount_free)
         counters[self.sku] -= self.ammount_needed
         counters[self.discounted_sku] -= self.ammount_free
         return counters
@@ -154,7 +155,6 @@ class PriceTable:
                         while offer[0][position].isnumeric():
                             position+=1
                         temp_offers.append(SpecialOffer(offer[0][position:], OfferType.COMBO, (int(offer[0][:position]), offer[3], 1)))
-                        print(offer[0][position:], str((int(offer[0][:position]), offer[3], 1)))
                 temp_item = Item(line[1].strip(), int(line[2].strip()), temp_offers)
                 self.skus[line[1].strip()] = temp_item
                 self.special_offers += temp_offers
@@ -180,6 +180,7 @@ def checkout(skus):
                 special_sku_counter[item] = 1
         for offer in table.special_offers:
             while offer.is_applicable(special_sku_counter):
+                print('yes')
                 total += offer.get_cost(table.skus)
                 special_sku_counter = offer.apply_special(special_sku_counter)
         for item in special_sku_counter:
@@ -188,6 +189,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

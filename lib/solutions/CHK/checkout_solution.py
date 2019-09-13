@@ -71,6 +71,7 @@ class PriceTable:
         self.special_offers.append((SpecialOffer('E', OfferType.COMBO, (2, 'B', 1))))
         self.special_offers.append((SpecialOffer('A', OfferType.DISCOUNT, (3, 130))))
         self.special_offers.append((SpecialOffer('A', OfferType.DISCOUNT, (5, 200))))
+        self.special_offers.sort(key=__sorter_method__(), reverse=True)
         
 
 # noinspection PyUnusedLocal
@@ -98,6 +99,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

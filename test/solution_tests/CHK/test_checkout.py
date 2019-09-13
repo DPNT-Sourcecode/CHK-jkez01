@@ -3,6 +3,7 @@ import pytest
 
 
 class TestCheckout():
-    def test_one(self):
-        assert checkout_solution.checkout("World") == "Hello, World!"
+    def test_one_each(self):
+        assert checkout_solution.checkout("ABCD") == 115
+
 

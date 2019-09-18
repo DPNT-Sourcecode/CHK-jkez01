@@ -32,8 +32,7 @@ class SpecialOffer:
         return counters
 
     def __apply_anypack__(self, counters):
-        print('c')
-        return {}
+        return counters
 
     def __apply_discount__(self, counters):
         counters[self.sku] -= self.number
@@ -66,8 +65,6 @@ class SpecialOffer:
         for i in self.skus:
             if i in counters:
                 counter += counters[i]
-                print('b', i, counters[i])  # counter += counters[i]
-        print('a', counter)
         return counter >= self.ammount
 
     def __is_applicable_discount__(self, counters):
@@ -240,7 +237,6 @@ def checkout(skus):
             else:
                 special_sku_counter[item] = 1
         for offer in table.special_offers:
-            print(offer.sku)
             while offer.is_applicable(special_sku_counter):
                 total += offer.get_cost(table.skus)
                 special_sku_counter = offer.apply_special(special_sku_counter)
@@ -250,6 +246,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

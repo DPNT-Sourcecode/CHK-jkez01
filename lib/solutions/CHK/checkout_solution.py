@@ -166,6 +166,7 @@ class PriceTable:
     def __init__(self):
         self.skus = {}
         self.special_offers = []
+        self.special_offer_duplicates = {}
         with open('lib/solutions/CHK/input.txt', 'r') as f:
             lines = f.readlines()
             for line in lines:
@@ -173,8 +174,8 @@ class PriceTable:
                 temp_offers = []
                 offer = line[3].strip()
                 if 'buy' in offer:
-                    offer = offer.split(' ')
-                    print(offer)
+                    self.special_offer_duplicates[offer] = SpecialOffer(
+                        offer, OfferType.ANYPACK, offer)
                 elif 'for' in offer:
                     offers = line[3].strip().split(',')
                     for offer in offers:
@@ -201,6 +202,9 @@ class PriceTable:
                     line[2].strip()), temp_offers, is_special)
                 self.skus[line[1].strip()] = temp_item
                 self.special_offers += temp_offers
+        for key in self.special_offer_duplicates:
+            self.special_offers.append(self.special_offer_duplicates[key])
+        print(self.special_offers)
         self.special_offers = sorted(
             self.special_offers, key=self.__sorting_helper__, reverse=True)
 
@@ -232,6 +236,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

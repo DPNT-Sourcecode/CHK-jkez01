@@ -1,11 +1,15 @@
 from enum import Enum
 
+
 class OfferType(Enum):
     DISCOUNT = 1
     COMBO = 2
+    ANYPACK = 3
+
 
 def raise_value_error(message):
     raise ValueError(message)
+
 
 class SpecialOffer:
     """
@@ -15,14 +19,20 @@ class SpecialOffer:
 
     def apply_special(self, counters):
         return {
-            OfferType.DISCOUNT : lambda: self.__apply_discount__(counters),
-            OfferType.COMBO : lambda: self.__apply_combo__(counters) 
+            OfferType.DISCOUNT: lambda: self.__apply_discount__(counters),
+            OfferType.COMBO: lambda: self.__apply_combo__(counters),
+            OfferType.ANYPACK: lambda: self.__apply_anypack__(counters),
         }.get(self.type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
 
     def __apply_combo__(self, counters):
-        print(self.sku, self.ammount_needed, self.discounted_sku, self.ammount_free)
+        print(self.sku, self.ammount_needed,
+              self.discounted_sku, self.ammount_free)
         counters[self.sku] -= self.ammount_needed
         counters[self.discounted_sku] -= self.ammount_free
+        return counters
+
+    def __apply_anypack__(self, counters):
+        print("apply anypack not implemented")
         return counters
 
     def __apply_discount__(self, counters):
@@ -31,8 +41,8 @@ class SpecialOffer:
 
     def is_applicable(self, counters):
         return {
-            OfferType.DISCOUNT : lambda: self.__is_applicable_discount__(counters),
-            OfferType.COMBO : lambda: self.__is_applicable_combo__(counters) 
+            OfferType.DISCOUNT: lambda: self.__is_applicable_discount__(counters),
+            OfferType.COMBO: lambda: self.__is_applicable_combo__(counters)
         }.get(self.type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
 
     def __is_applicable_combo__(self, counters):
@@ -58,17 +68,17 @@ class SpecialOffer:
         return True
 
     def __get_discount_cost__(self, price):
-        return self.cost 
+        return self.cost
 
-    def __get_combo_cost__(self, skus): 
-        return skus[self.sku].price * self.ammount_needed 
+    def __get_combo_cost__(self, skus):
+        return skus[self.sku].price * self.ammount_needed
 
     def get_cost(self, skus):
         if self.sku not in skus:
             raise ValueError("Price_table is missing sku for cost calculation")
         return {
-            OfferType.DISCOUNT : lambda: self.__get_discount_cost__(skus[self.sku].price),
-            OfferType.COMBO : lambda: self.__get_combo_cost__(skus) 
+            OfferType.DISCOUNT: lambda: self.__get_discount_cost__(skus[self.sku].price),
+            OfferType.COMBO: lambda: self.__get_combo_cost__(skus)
         }.get(self.type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
 
     def __set_discount__(self, discount):
@@ -86,30 +96,32 @@ class SpecialOffer:
 
     def __set_type__(self, discount):
         return {
-            OfferType.DISCOUNT : lambda: self.__set_discount__(discount),
-            OfferType.COMBO : lambda: self.__set_combo__(discount) 
+            OfferType.DISCOUNT: lambda: self.__set_discount__(discount),
+            OfferType.COMBO: lambda: self.__set_combo__(discount)
         }.get(self.type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
 
     def __get_discount_savings__(self, price):
-        return self.number * price - self.cost 
+        return self.number * price - self.cost
 
     def __get_combo_savings__(self, skus):
         if self.sku == self.discounted_sku:
-            return skus[self.sku].price 
-        return skus[self.discounted_sku].price * self.ammount_needed 
+            return skus[self.sku].price
+        return skus[self.discounted_sku].price * self.ammount_needed
 
     def get_savings(self, skus):
         if self.sku not in skus:
-            raise ValueError("Price_table is missing sku for savings calculation")
+            raise ValueError(
+                "Price_table is missing sku for savings calculation")
         return {
-            OfferType.DISCOUNT : lambda: self.__get_discount_savings__(skus[self.sku].price),
-            OfferType.COMBO : lambda: self.__get_combo_savings__(skus) 
+            OfferType.DISCOUNT: lambda: self.__get_discount_savings__(skus[self.sku].price),
+            OfferType.COMBO: lambda: self.__get_combo_savings__(skus)
         }.get(self.type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
 
     def __init__(self, sku, type, discount):
         self.sku = sku
         self.type = type
         self.discount = self.__set_type__(discount)
+
 
 class Item:
 
@@ -119,6 +131,7 @@ class Item:
         self.offers = offers
         self.is_special = is_special
 
+
 class PriceTable:
     """
     Holds a price dictionary, and a special offer list:
@@ -127,9 +140,9 @@ class PriceTable:
 
     the special offer list is built and then sorted by favourability to the customer
     """
+
     def __sorting_helper__(self, offer):
         return offer.get_savings(self.skus)
-
 
     def __init__(self):
         self.skus = {}
@@ -150,25 +163,28 @@ class PriceTable:
                         offer = offer.strip().split(' ')
                         position = 0
                         while offer[0][position].isnumeric():
-                         position+=1
-                        temp_offers.append(SpecialOffer(offer[0][position:], OfferType.DISCOUNT, (int(offer[0][:position]), int(offer[2]))))
+                            position += 1
+                        temp_offers.append(SpecialOffer(
+                            offer[0][position:], OfferType.DISCOUNT, (int(offer[0][:position]), int(offer[2]))))
                 elif 'free' in offer:
                     offer = offer.split(' ')
                     position = 0
                     while offer[0][position].isnumeric():
-                        position+=1
-                    temp_offers.append(SpecialOffer(offer[0][position:], OfferType.COMBO, (int(offer[0][:position]), offer[3], 1)))
+                        position += 1
+                    temp_offers.append(SpecialOffer(
+                        offer[0][position:], OfferType.COMBO, (int(offer[0][:position]), offer[3], 1)))
                     if offer[3] in self.skus:
                         self.skus[offer[3]].is_special = True
                 is_special = False
                 if len(temp_offers) > 0:
                     is_special = True
-                temp_item = Item(line[1].strip(), int(line[2].strip()), temp_offers, is_special)
+                temp_item = Item(line[1].strip(), int(
+                    line[2].strip()), temp_offers, is_special)
                 self.skus[line[1].strip()] = temp_item
                 self.special_offers += temp_offers
-        self.special_offers = sorted(self.special_offers, key=self.__sorting_helper__, reverse=True)
-        
-        
+        self.special_offers = sorted(
+            self.special_offers, key=self.__sorting_helper__, reverse=True)
+
 
 # noinspection PyUnusedLocal
 # skus = unicode string
@@ -197,3 +213,4 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+

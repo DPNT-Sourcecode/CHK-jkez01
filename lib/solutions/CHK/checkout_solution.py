@@ -33,7 +33,7 @@ class SpecialOffer:
 
     def __apply_anypack__(self, counters):
         print("apply anypack not implemented")
-        return counters
+        return counters = {}
 
     def __apply_discount__(self, counters):
         counters[self.sku] -= self.number
@@ -249,6 +249,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

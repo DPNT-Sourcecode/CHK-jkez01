@@ -31,11 +31,16 @@ class SpecialOffer:
         counters[self.discounted_sku] -= self.ammount_free
         return counters
 
-    def __apply_anypack__(self, counters, skus):
+    def __anypack_helper__(self, counters, skus):
         items = []
         for i in self.skus:
             if i in counters and counters[i] > 0:
                 items.append((i, skus[i].price))
+        items = sorted(items, key=lambda x: x[1], reverse=True)
+        return items
+
+    def __apply_anypack__(self, counters, skus):
+        items = self.__anypack_helper__(counters, skus)
         print(items)
         return {}
 
@@ -252,6 +257,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

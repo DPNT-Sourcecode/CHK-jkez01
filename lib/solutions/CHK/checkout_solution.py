@@ -131,7 +131,8 @@ class SpecialOffer:
     def __get_anypack_savings__(self, skus):
         max_value = -1
         for i in self.skus:
-            if skus[i] > max_value:
+            print(i, skus[i])
+            if skus[i].price > max_value:
                 max_value = skus[i]
         print(max_value * self.ammount)
         return max_value * self.ammount
@@ -213,7 +214,6 @@ class PriceTable:
                 self.special_offers += temp_offers
         for key in self.special_offer_duplicates:
             self.special_offers.append(self.special_offer_duplicates[key])
-        print(self.special_offers)
         self.special_offers = sorted(
             self.special_offers, key=self.__sorting_helper__, reverse=True)
 
@@ -245,4 +245,5 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 

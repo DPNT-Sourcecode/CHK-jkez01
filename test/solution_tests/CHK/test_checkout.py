@@ -61,5 +61,9 @@ class TestCheckout():
     def test_anypack_applicable(self):
         assert checkout_solution.checkout("SSXA") == 95
 
+    def test_anypack_applicable(self):
+        assert checkout_solution.checkout("ZXYTSZXTSSXA") == 95
+
     def test_bad_type(self):
         assert checkout_solution.checkout(3) == -1
+

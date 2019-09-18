@@ -93,7 +93,14 @@ class SpecialOffer:
     def __get_anypack_cost__(self, skus, counters):
         cost = 0
         items = self.__anypack_helper__(counters, skus)
-        print(items)
+        to_fill = self.ammount
+        items_index = 0
+        while to_fill > 0 and items_index < len(items):
+            cost += items[items_index][1] * \
+                min(to_fill, counters[items[items_index][0]])
+            to_fill -= min(to_fill, counters[items[items_index][0]])
+            items_index += 1
+        print(cost)
         return cost
 
     def get_cost(self, skus, counters):
@@ -259,6 +266,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

@@ -66,6 +66,8 @@ class SpecialOffer:
         for i in self.skus:
             if i in counters:
                 print(i)
+            else:
+                print(i, "no")
         return counter >= self.ammount
 
     def __is_applicable_discount__(self, counters):
@@ -246,6 +248,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

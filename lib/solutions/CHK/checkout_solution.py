@@ -83,7 +83,7 @@ class SpecialOffer:
         return 0
 
     def get_cost(self, skus):
-        if self.sku not in skus:
+        if self.sku not in skus and self.type != OfferType.ANYPACK:
             raise ValueError("Price_table is missing sku for cost calculation")
         return {
             OfferType.DISCOUNT: lambda: self.__get_discount_cost__(skus[self.sku].price),
@@ -105,6 +105,8 @@ class SpecialOffer:
         self.ammount_free = discount[2]
 
     def __set_anypack__(self, discount):
+        if len(discount) < 7:
+            raise ValueError("Invalid ANYPACK type")
         discount = discount.split(' ')
         self.ammount = int(discount[2])
         self.price = int(discount[6])
@@ -131,7 +133,7 @@ class SpecialOffer:
         return 0
 
     def get_savings(self, skus):
-        if self.sku not in skus:
+        if self.sku not in skus and self.type != OfferType.ANYPACK:
             raise ValueError(
                 "Price_table is missing sku for savings calculation")
         return {
@@ -239,6 +241,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

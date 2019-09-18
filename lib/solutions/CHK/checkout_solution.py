@@ -48,8 +48,8 @@ class SpecialOffer:
                 counters[items[items_index][0]] -= to_fill
                 to_fill = 0
             else:
-                counters[items[items_index][0]] -= to_fill
-                to_fill = 0
+                to_fill -= counters[items[items_index][0]]
+                counters[items[items_index][0]] = 0
             items_index += 1
         return counters
 
@@ -265,12 +265,3 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
-
-
-
-
-
-
-
-
-

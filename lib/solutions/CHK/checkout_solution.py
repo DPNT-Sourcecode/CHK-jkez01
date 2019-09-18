@@ -129,8 +129,12 @@ class SpecialOffer:
         return skus[self.discounted_sku].price * self.ammount_needed
 
     def __get_anypack_savings__(self, skus):
-        print("get anypack savings not implemented")
-        return 0
+        max_value = -1
+        for i in self.skus:
+            if skus[i] > max_value:
+                max_value = skus[i]
+        print(max_value * self.ammount)
+        return max_value * self.ammount
 
     def get_savings(self, skus):
         if self.sku not in skus and self.type != OfferType.ANYPACK:
@@ -241,3 +245,4 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+

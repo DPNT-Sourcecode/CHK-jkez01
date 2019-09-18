@@ -105,7 +105,11 @@ class SpecialOffer:
         self.ammount_free = discount[2]
 
     def __set_anypack__(self, discount):
-        print("set anypack not implemented")
+        discount = discount.split(' ')
+        self.ammount = int(discount[2])
+        self.price = int(discount[6])
+        discount_skus = discount[4][1:len(discount[4])-1].split(',')
+        self.skus = discount_skus
 
     def __set_type__(self, discount):
         return {
@@ -179,7 +183,6 @@ class PriceTable:
                 elif 'for' in offer:
                     offers = line[3].strip().split(',')
                     for offer in offers:
-                        print(offer)
                         offer = offer.strip().split(' ')
                         position = 0
                         while offer[0][position].isnumeric():
@@ -236,6 +239,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

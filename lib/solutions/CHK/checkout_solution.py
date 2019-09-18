@@ -90,17 +90,19 @@ class SpecialOffer:
     def __get_combo_cost__(self, skus):
         return skus[self.sku].price * self.ammount_needed
 
-    def __get_anypack_cost__(self, skus):
-        print("anypack cost not implemented")
-        return 0
+    def __get_anypack_cost__(self, skus, counters):
+        cost = 0
+        items = self.__anypack_helper__(counters, skus)
+        print(items)
+        return cost
 
-    def get_cost(self, skus):
+    def get_cost(self, skus, counters):
         if self.sku not in skus and self.type != OfferType.ANYPACK:
             raise ValueError("Price_table is missing sku for cost calculation")
         return {
             OfferType.DISCOUNT: lambda: self.__get_discount_cost__(skus[self.sku].price),
             OfferType.COMBO: lambda: self.__get_combo_cost__(skus),
-            OfferType.ANYPACK: lambda: self.__get_anypack_cost__(skus)
+            OfferType.ANYPACK: lambda: self.__get_anypack_cost__(skus, counters)
         }.get(self.type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
 
     def __set_discount__(self, discount):
@@ -248,7 +250,7 @@ def checkout(skus):
                 special_sku_counter[item] = 1
         for offer in table.special_offers:
             while offer.is_applicable(special_sku_counter):
-                total += offer.get_cost(table.skus)
+                total += offer.get_cost(table.skus, special_sku_counter)
                 special_sku_counter = offer.apply_special(
                     special_sku_counter, table.skus)
         for item in special_sku_counter:
@@ -257,6 +259,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

@@ -65,9 +65,8 @@ class SpecialOffer:
         counter = 0
         for i in self.skus:
             if i in counters:
-                print(i)
-            else:
-                print(i, "no")
+                print(i, counters[i])  # counter += counters[i]
+        print(counter)
         return counter >= self.ammount
 
     def __is_applicable_discount__(self, counters):
@@ -188,8 +187,8 @@ class PriceTable:
                 temp_offers = []
                 offer = line[3].strip()
                 if 'buy' in offer:
-                    self.special_offer_duplicates[offer] = SpecialOffer(
-                        offer, OfferType.ANYPACK, offer)
+                    temp_offers.append(SpecialOffer(
+                        offer, OfferType.ANYPACK, offer))
                 elif 'for' in offer:
                     offers = line[3].strip().split(',')
                     for offer in offers:
@@ -214,9 +213,11 @@ class PriceTable:
                 temp_item = Item(line[1].strip(), int(
                     line[2].strip()), temp_offers, is_special)
                 self.skus[line[1].strip()] = temp_item
-                self.special_offers += temp_offers
-        for key in self.special_offer_duplicates:
-            self.special_offers.append(self.special_offer_duplicates[key])
+                for offer in temp_offers:
+                    if offer.sku not in self.special_offer_duplicates:
+                        self.special_offers.append(offer)
+                    if offer.type == OfferType.ANYPACK:
+                        self.special_offer_duplicates[offer] = True
         self.special_offers = sorted(
             self.special_offers, key=self.__sorting_helper__, reverse=True)
 
@@ -248,6 +249,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

@@ -241,9 +241,3 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
-
-
-
-
-
-

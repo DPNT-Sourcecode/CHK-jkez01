@@ -58,4 +58,3 @@ class TestCheckout():
     def test_bad_type(self):
         assert checkout_solution.checkout(3) == -1
 
-

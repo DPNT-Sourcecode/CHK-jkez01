@@ -41,8 +41,17 @@ class SpecialOffer:
 
     def __apply_anypack__(self, counters, skus):
         items = self.__anypack_helper__(counters, skus)
-        print(items)
-        return {}
+        to_fill = self.ammount
+        items_index = 0
+        while to_fill > 0 and items_index < len(items):
+            if to_fill <= counters[items[items_index][0]]:
+                counters[items[items_index][0]] -= to_fill
+                to_fill = 0
+            else:
+                counters[items[items_index][0]] -= to_fill
+                to_fill = 0
+            items_index += 1
+        return counters
 
     def __apply_discount__(self, counters):
         counters[self.sku] -= self.number
@@ -91,17 +100,7 @@ class SpecialOffer:
         return skus[self.sku].price * self.ammount_needed
 
     def __get_anypack_cost__(self, skus, counters):
-        cost = 0
-        items = self.__anypack_helper__(counters, skus)
-        to_fill = self.ammount
-        items_index = 0
-        while to_fill > 0 and items_index < len(items):
-            cost += items[items_index][1] * \
-                min(to_fill, counters[items[items_index][0]])
-            to_fill -= min(to_fill, counters[items[items_index][0]])
-            items_index += 1
-        print(cost)
-        return cost
+        return self.price
 
     def get_cost(self, skus, counters):
         if self.sku not in skus and self.type != OfferType.ANYPACK:
@@ -266,6 +265,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

@@ -42,7 +42,8 @@ class SpecialOffer:
     def is_applicable(self, counters):
         return {
             OfferType.DISCOUNT: lambda: self.__is_applicable_discount__(counters),
-            OfferType.COMBO: lambda: self.__is_applicable_combo__(counters)
+            OfferType.COMBO: lambda: self.__is_applicable_combo__(counters),
+            OfferType.ANYPACK: lambda: self.__is_applicable_anypack__(counters)
         }.get(self.type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
 
     def __is_applicable_combo__(self, counters):
@@ -60,6 +61,10 @@ class SpecialOffer:
             return False
         return True
 
+    def __is_applicable_anypack__(self, counters):
+        print("is applicable anypack not implemented")
+        return False
+
     def __is_applicable_discount__(self, counters):
         if self.sku not in counters:
             return False
@@ -73,12 +78,17 @@ class SpecialOffer:
     def __get_combo_cost__(self, skus):
         return skus[self.sku].price * self.ammount_needed
 
+    def __get_anypack_cost__(self, skus):
+        print("anypack cost not implemented")
+        return 0
+
     def get_cost(self, skus):
         if self.sku not in skus:
             raise ValueError("Price_table is missing sku for cost calculation")
         return {
             OfferType.DISCOUNT: lambda: self.__get_discount_cost__(skus[self.sku].price),
-            OfferType.COMBO: lambda: self.__get_combo_cost__(skus)
+            OfferType.COMBO: lambda: self.__get_combo_cost__(skus),
+            OfferType.ANYPACK: lambda: self.__get_anypack_cost__(skus)
         }.get(self.type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
 
     def __set_discount__(self, discount):
@@ -97,7 +107,8 @@ class SpecialOffer:
     def __set_type__(self, discount):
         return {
             OfferType.DISCOUNT: lambda: self.__set_discount__(discount),
-            OfferType.COMBO: lambda: self.__set_combo__(discount)
+            OfferType.COMBO: lambda: self.__set_combo__(discount),
+            OfferType.ANYPACK: lambda: self.__set_anypack__(discount),
         }.get(self.type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
 
     def __get_discount_savings__(self, price):
@@ -213,4 +224,5 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 

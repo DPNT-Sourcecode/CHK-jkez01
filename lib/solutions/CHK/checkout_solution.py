@@ -34,7 +34,7 @@ class SpecialOffer:
     def __apply_anypack__(self, counters, applied):
         print('c', applied)
         if applied is None:
-            return {}
+            return counters
         return counters
 
     def __apply_discount__(self, counters):
@@ -251,4 +251,5 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 

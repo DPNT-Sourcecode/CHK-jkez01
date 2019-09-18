@@ -62,8 +62,11 @@ class SpecialOffer:
         return True
 
     def __is_applicable_anypack__(self, counters):
-        print("is applicable anypack not implemented")
-        return False
+        counter = 0
+        for i in self.skus:
+            if i in counters:
+                print(i)
+        return counter >= self.ammount
 
     def __is_applicable_discount__(self, counters):
         if self.sku not in counters:
@@ -131,10 +134,8 @@ class SpecialOffer:
     def __get_anypack_savings__(self, skus):
         max_value = 0
         for i in self.skus:
-            print(skus[i].name, skus[i].price, max_value)
             if skus[i].price > max_value:
                 max_value = skus[i].price
-        print(max_value * self.ammount)
         return max_value * self.ammount
 
     def get_savings(self, skus):
@@ -245,6 +246,7 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
 

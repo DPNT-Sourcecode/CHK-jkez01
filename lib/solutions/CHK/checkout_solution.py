@@ -31,19 +31,21 @@ class SpecialOffer:
         counters[self.discounted_sku] -= self.ammount_free
         return counters
 
-    def __apply_anypack__(self, counters):
-        print("apply anypack not implemented")
-        return counters = {}
+    def __apply_anypack__(self, counters, applied):
+        print('c', applied)
+        if applied is None:
+            return {}
+        return counters
 
     def __apply_discount__(self, counters):
         counters[self.sku] -= self.number
         return counters
 
-    def is_applicable(self, counters):
+    def is_applicable(self, counters, applied=None):
         return {
             OfferType.DISCOUNT: lambda: self.__is_applicable_discount__(counters),
             OfferType.COMBO: lambda: self.__is_applicable_combo__(counters),
-            OfferType.ANYPACK: lambda: self.__is_applicable_anypack__(counters)
+            OfferType.ANYPACK: lambda: self.__is_applicable_anypack__(counters, applied)
         }.get(self.type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
 
     def __is_applicable_combo__(self, counters):
@@ -65,8 +67,8 @@ class SpecialOffer:
         counter = 0
         for i in self.skus:
             if i in counters:
-                print(i, counters[i])  # counter += counters[i]
-        print(counter)
+                print('b', i, counters[i])  # counter += counters[i]
+        print('a', counter)
         return counter >= self.ammount
 
     def __is_applicable_discount__(self, counters):
@@ -249,3 +251,4 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+

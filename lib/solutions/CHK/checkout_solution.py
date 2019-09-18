@@ -104,11 +104,14 @@ class SpecialOffer:
         self.discounted_sku = discount[1]
         self.ammount_free = discount[2]
 
+    def __set_anypack__(self, discount):
+        print("set anypack not implemented")
+
     def __set_type__(self, discount):
         return {
             OfferType.DISCOUNT: lambda: self.__set_discount__(discount),
             OfferType.COMBO: lambda: self.__set_combo__(discount),
-            OfferType.ANYPACK: lambda: self.__set_anypack__(discount),
+            OfferType.ANYPACK: lambda: self.__set_anypack__(discount)
         }.get(self.type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
 
     def __get_discount_savings__(self, price):
@@ -119,13 +122,18 @@ class SpecialOffer:
             return skus[self.sku].price
         return skus[self.discounted_sku].price * self.ammount_needed
 
+    def __get_anypack_savings__(self, skus):
+        print("get anypack savings not implemented")
+        return 0
+
     def get_savings(self, skus):
         if self.sku not in skus:
             raise ValueError(
                 "Price_table is missing sku for savings calculation")
         return {
             OfferType.DISCOUNT: lambda: self.__get_discount_savings__(skus[self.sku].price),
-            OfferType.COMBO: lambda: self.__get_combo_savings__(skus)
+            OfferType.COMBO: lambda: self.__get_combo_savings__(skus),
+            OfferType.ANYPACK: lambda: self.__get_anypack_savings__(skus)
         }.get(self.type, lambda: raise_value_error("Invalid SpecialOffer OfferType"))()
 
     def __init__(self, sku, type, discount):
@@ -177,7 +185,7 @@ class PriceTable:
                             position += 1
                         temp_offers.append(SpecialOffer(
                             offer[0][position:], OfferType.DISCOUNT, (int(offer[0][:position]), int(offer[2]))))
-                elif 'free' in offer:
+                elif 'free' in offer and 'get' in offer:
                     offer = offer.split(' ')
                     position = 0
                     while offer[0][position].isnumeric():
@@ -224,5 +232,6 @@ def checkout(skus):
         return total
     except Exception as e:
         return -1
+
 
 
